@@ -2,7 +2,7 @@ import java.io.File
 import kotlin.math.*
 
 fun readFile(): MutableList<String>{
-    val fileName = "./day1.txt"
+    val fileName = "resources/day1.txt"
     val myList = mutableListOf<String>()
     File(fileName).useLines { lines -> myList.addAll(lines)}
    return myList
