@@ -25,6 +25,10 @@ class Computer(var code :MutableList<Int>, val input_value :Int){
 			2 -> multiply(param1, param2)
 			3 -> input(param1)
 			4 -> output(param1)
+			5 -> jumpIfTrue(param1, param2)
+			6 -> jumpIfFalse(param1, param2)
+			7 -> lessThan(param1, param2)
+			8 -> equals(param1, param2)
 			99 -> halt()
 			else -> {println("wrong opcode $opcode"); instructionPointer += 1}
 		}
@@ -46,6 +50,26 @@ class Computer(var code :MutableList<Int>, val input_value :Int){
 	fun output(param1 :Int){
 		println(code[param1])
 		instructionPointer += 2
+	}
+	fun jumpIfTrue(param1: Int, param2: Int) {
+		if ( code[param1] != 0) { instructionPointer = code[param2] }
+		else { instructionPointer += 3}
+	}
+	fun jumpIfFalse(param1: Int, param2: Int) {
+		if ( code[param1] == 0){ instructionPointer = code[param2] }
+		else { instructionPointer += 3}
+	}
+	fun lessThan(param1: Int, param2: Int) {
+		val param3 = code[instructionPointer+3]
+		if (code[param1] < code[param2]) { code[param3] = 1 }
+		else { code[param3] = 0 }
+		instructionPointer += 4
+	}
+	fun equals(param1 :Int, param2: Int) {
+		val param3 = code[instructionPointer+3]
+		if (code[param1] == code[param2]) { code[param3] = 1 }
+		else { code[param3] = 0 }
+		instructionPointer += 4
 	}
 	fun halt(){
 		instructionPointer = code.size
