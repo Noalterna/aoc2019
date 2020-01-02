@@ -1,7 +1,12 @@
 package Intcode
 
-class Computer(var code :MutableList<Int>, val input_value :Int){
+open class Computer(var code :MutableList<Int>){
+	constructor(code: MutableList<Int>, input_value :Int) : this(code) {
+		this.input_value = input_value
+	}
+	var input_value :Int = 0
 	var instructionPointer = 0
+	var lastOutput :Int = -1
 
 	fun executeInstruction(opcode :Int){
 		val instruction = opcode.rem(100)
@@ -43,12 +48,12 @@ class Computer(var code :MutableList<Int>, val input_value :Int){
 		code[param3] = code[param1] * code[param2]
 		instructionPointer += 4
 	}
-	fun input(param1 :Int){
+	open fun input(param1 :Int){
 		code[param1] = input_value
 		instructionPointer += 2
 	}
-	fun output(param1 :Int){
-		println(code[param1])
+	fun output(param1 :Int) {
+		lastOutput = code[param1]
 		instructionPointer += 2
 	}
 	fun jumpIfTrue(param1: Int, param2: Int) {
@@ -80,4 +85,16 @@ class Computer(var code :MutableList<Int>, val input_value :Int){
 			executeInstruction(opcode)
 		}
 	}
+}
+
+class Amplifier(code :MutableList<Int>) : Computer(code){
+	constructor(code :MutableList<Int>, inputs :List<Int>) : this(code) { this.inputs = inputs}
+	var inputs :List<Int> = listOf()
+	var countInput = 0
+	override fun input(param1 :Int) {
+		code[param1] = inputs[countInput]
+		countInput+=1
+		instructionPointer += 2
+	}
+
 }
