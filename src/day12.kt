@@ -48,7 +48,7 @@ fun main() {
 	val moonsPositions = input.map{ Regex("""-?\d+""").findAll(it)
 		.map{ match -> match.value.toInt()}.toMutableList()
 	}
-	val motion = simulate(moonsPositions, 10)
+	val motion = simulate(moonsPositions, 1000)
 	println("Part 1 result: " + countTotalEnergy(motion))
 
 }
